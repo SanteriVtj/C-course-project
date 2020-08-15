@@ -5,7 +5,7 @@
 int main(void) {
     int loop = 1;
     char buffer[51];
-    struct student *reg = malloc(sizeof(struct student *));
+    struct student *reg = initDB();
     while (loop) {
         printf("Insert student: ");
         char *ret = fgets(buffer, 51, stdin);
@@ -21,6 +21,9 @@ int main(void) {
         case 'Q':
             printf("Bye!\n");
             loop = 0;
+            break;
+
+        case 'U':
             break;
 
         case 'A':

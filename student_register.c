@@ -10,15 +10,18 @@ struct student * initDB() {
 }
 
 void printStudent(struct student *reg) {
-    // while (reg) {
-    printf("%s %s\n", reg->first_name, reg->last_name);
-    printf("Student number: %d\n", reg->stud_num);
-    printf("Points: %d\n", reg->points);
-    //     reg++;
-    // }
+    while (reg) {
+        printf("%s %s\n", reg->first_name, reg->last_name);
+        printf("Student number: %d\n", reg->stud_num);
+        for (int i = 0; i < 6; i++) {
+            printf("%d ", reg->points[i]);
+        }
+        printf("\n");
+        reg++;
+    }
 }
 
-void parser(char *input, struct student *r) {
+void parser(char *input, struct student *reg) {
     struct student *s = malloc(sizeof(struct student *));
     int loc = 0;
     int k = 0;
@@ -62,15 +65,21 @@ void parser(char *input, struct student *r) {
                 k++;
                 break;
             }
-            s->points = 0;
+            memset(s->points, 0, sizeof(s->points));
+            s->sum = 0;
         }
     }
-    printStudent(s);
-    free(s);
+    addStudent(reg, s);
 }
 
-void add_student(struct student *reg, struct student *s) {
+void addStudent(struct student *reg, struct student *s) {
+    int last = sizeof(reg) / sizeof(struct student *);
+    reg = realloc(reg, sizeof(reg) + sizeof(struct student *));
+    reg[last] = *s;
+}
 
+void refresP(int opnro) {
+    
 }
 
 void del_register(struct student *r) {
