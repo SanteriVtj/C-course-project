@@ -7,6 +7,7 @@ struct student {
 };
 
 void printStudent(struct student *reg);
-void parser(char *input, struct student *r);
-void addStudent(struct student *reg, struct student *s);
-void refresP(int opnro);
+struct student *parser(char *input, struct student *r);
+struct student *addStudent(struct student *reg, struct student *s);
+void refresP(char *input, struct student *reg);
+void del_register(struct student*r);
