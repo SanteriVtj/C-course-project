@@ -6,7 +6,7 @@ struct student {
     char last_name[20];
 };
 
+void printStudent(struct student *reg);
 void parser(char *input, struct student *r);
 void addStudent(struct student *reg, struct student *s);
-struct student * initDB();
 void refresP(int opnro);

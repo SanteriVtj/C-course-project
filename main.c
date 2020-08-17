@@ -5,16 +5,15 @@
 int main(void) {
     int loop = 1;
     char buffer[51];
-    struct student *reg = initDB();
+    struct student *reg = malloc(sizeof(struct student *));
+    char *ret = malloc(51 * sizeof(char));
     while (loop) {
-        printf("Insert student: ");
-        char *ret = fgets(buffer, 51, stdin);
+        printf("Insert command: ");
+        ret = fgets(buffer, 51, stdin);
         if (ret == NULL) {
             printf("fget returned NULL");
             break;
         }
-
-
 
         switch (ret[0])
         {
@@ -30,9 +29,14 @@ int main(void) {
             parser(buffer, reg);
             break;
         
+        case 'L':
+            printStudent(reg);
+            break;
+
         default:
             // printf("%s", buffer);
             break;
         }
     }
+    free(ret);
 }

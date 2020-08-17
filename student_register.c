@@ -4,20 +4,15 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-
-struct student * initDB() {
-    return malloc(sizeof(struct student));
-}
-
 void printStudent(struct student *reg) {
-    while (reg) {
-        printf("%s %s\n", reg->first_name, reg->last_name);
-        printf("Student number: %d\n", reg->stud_num);
-        for (int i = 0; i < 6; i++) {
-            printf("%d ", reg->points[i]);
+    // printf("%s", reg[sizeof(*reg) / sizeof(struct student *)].first_name);
+    for (int i = 0; i < sizeof(reg) / sizeof(struct student *); i++) {
+        printf("%s %s\n", reg[i].first_name, reg[i].last_name);
+        printf("Student number: %d\n", reg[i].stud_num);
+        for (int j = 0; j < 6; j++) {
+            printf("%d ", reg[i].points[j]);
         }
         printf("\n");
-        reg++;
     }
 }
 
@@ -32,6 +27,7 @@ void parser(char *input, struct student *reg) {
         }
         if (!isspace((unsigned char) input[k])) {
             char stud_n[7];
+            memset(stud_n, 0, sizeof(stud_n));
             char l_name[20];
             char f_name[20];
             int i = 0;
@@ -65,17 +61,17 @@ void parser(char *input, struct student *reg) {
                 k++;
                 break;
             }
-            memset(s->points, 0, sizeof(s->points));
-            s->sum = 0;
         }
     }
+    memset(s->points, 0, sizeof(s->points));
+    s->sum = 0;
     addStudent(reg, s);
 }
 
 void addStudent(struct student *reg, struct student *s) {
     int last = sizeof(reg) / sizeof(struct student *);
-    reg = realloc(reg, sizeof(reg) + sizeof(struct student *));
-    reg[last] = *s;
+    reg[last - 1] = *s;
+    reg = realloc(reg, (last + 1) * sizeof(struct student *));
 }
 
 void refresP(int opnro) {
