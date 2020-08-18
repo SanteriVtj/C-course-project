@@ -6,7 +6,7 @@
 
 void printStudent(struct student *reg) {
     // printf("%s", reg[sizeof(*reg) / sizeof(struct student *)].first_name);
-    for (int i = 0; reg[i].first_name[0] != '\0'; i++) {
+    for (int i = 0; reg[i].first_name != NULL; i++) {
         printf("%s %s\n", reg[i].first_name, reg[i].last_name);
         printf("Student number: %d\n", reg[i].stud_num);
         for (int j = 0; j < 6; j++) {
@@ -19,6 +19,8 @@ void printStudent(struct student *reg) {
 
 struct student *parser(char *input, struct student *reg) {
     struct student *s = malloc(sizeof(struct student));
+    // memset(*s->first_name, 0, sizeof(*s->first_name));
+    // memset(*s->last_name, 0, sizeof(*s->last_name));
     int loc = 0;
     int k = 0;
     while(loc < 4) {
@@ -29,8 +31,6 @@ struct student *parser(char *input, struct student *reg) {
         if (!isspace((unsigned char) input[k])) {
             char stud_n[7];
             memset(stud_n, 0, sizeof(stud_n));
-            char l_name[20];
-            char f_name[20];
             int i = 0;
             int j;
             switch (loc)
@@ -44,18 +44,27 @@ struct student *parser(char *input, struct student *reg) {
                 break;
             
             case 2:
-                for (j = k; !isspace(input[j]); j++) {
-                    l_name[i++] = input[j];
+                s->last_name = malloc(sizeof(char) * 20);
+                if (!s->last_name) {
+                    return NULL;
                 }
-                strcpy(s->last_name, l_name);
+                for (j = k; !isspace(input[j]); j++) {
+                    s->last_name[i++] = input[j];
+                    if (sizeof(*s->last_name) / sizeof(char) == i - 1) {
+                        s->last_name = realloc(s->last_name, (sizeof(*s->last_name) + sizeof(char) * 5));
+                    }
+                }
                 k = j;
                 break;
             
             case 3:
+                s->first_name = malloc(sizeof(char) * 20);
                 for (j = k; !isspace(input[j]); j++) {
-                    f_name[i++] = input[j];
+                    s->first_name[i++] = input[j];
+                    if (sizeof(*s->first_name) / sizeof(char) == i - 1) {
+                        s->first_name = realloc(s->first_name, sizeof(*s->first_name) + sizeof(char) * 5);
+                    }
                 }
-                strcpy(s->first_name, f_name);
                 k = j;
                 break;
             default:
@@ -70,11 +79,13 @@ struct student *parser(char *input, struct student *reg) {
 }
 
 struct student *addStudent(struct student *reg, struct student *s) {
-    int last = 0;
-    for (last = 0; reg[last].first_name[0] != '\0'; last++);
+    // int last = sizeof(reg) / sizeof(struct student *);
+    int last;
+    for (last = 0; reg[last].first_name != NULL; last++);
     // printf("%d\n", last);
     reg[last] = *s;
     reg = realloc(reg, (last + 2) * sizeof(struct student));
+    reg[last + 1].first_name = NULL;
     return reg;
 }
 

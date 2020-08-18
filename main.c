@@ -8,6 +8,7 @@ int main(void) {
     char buffer[51];
     struct student *reg = malloc(sizeof(struct student));
     char *ret = malloc(51 * sizeof(char));
+    reg[0].first_name = NULL;
     while (loop) {
         printf("Insert command: ");
         ret = fgets(buffer, 51, stdin);
@@ -43,5 +44,4 @@ int main(void) {
             break;
         }
     }
-    // free(ret);
 }
