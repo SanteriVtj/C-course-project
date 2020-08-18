@@ -2,8 +2,8 @@ struct student {
     int stud_num;
     int points[6];
     int sum;
-    char *first_name;
-    char *last_name;
+    char first_name[21];
+    char last_name[21];
 };
 
 void printStudent(struct student *reg);

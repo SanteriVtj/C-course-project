@@ -5,26 +5,23 @@
 
 int main(void) {
     int loop = 1;
-    char buffer[51];
+    char buffer[150];
     struct student *reg = malloc(sizeof(struct student));
-    char *ret = malloc(51 * sizeof(char));
-    reg[0].first_name = NULL;
+    reg[0].stud_num = 0;
     while (loop) {
         printf("Insert command: ");
-        ret = fgets(buffer, 51, stdin);
-
-        if (ret == NULL) {
+        if (fgets(buffer, 150, stdin) == NULL) {
             printf("fget returned NULL");
             break;
         }
-        // printf("%s\n", ret);
-        switch (ret[0])
+        
+        switch (buffer[0])
         {
         case 'Q':
             printf("Bye!\n");
             loop = 0;
+            // free(reg);
             free(reg);
-            // del_register(reg);
             break;
 
         case 'U':
