@@ -29,7 +29,7 @@ int main(void) {
             break;
 
         case 'A':
-            reg = parser(buffer, reg);
+            reg = addParser(buffer, reg);
             break;
         
         case 'L':

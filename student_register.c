@@ -5,7 +5,6 @@
 #include <stdlib.h>
 
 void printStudent(struct student *reg) {
-    // printf("%s", reg[sizeof(*reg) / sizeof(struct student *)].first_name);
     for (int i = 0; reg[i].stud_num != 0; i++) {
         printf("%s %s\n", reg[i].first_name, reg[i].last_name);
         printf("Student number: %d\n", reg[i].stud_num);
@@ -17,10 +16,8 @@ void printStudent(struct student *reg) {
     }
 }
 
-struct student *parser(char *input, struct student *reg) {
+struct student *addParser(char *input, struct student *reg) {
     struct student *s = malloc(sizeof(struct student));
-    // memset(*s->first_name, 0, sizeof(*s->first_name));
-    // memset(*s->last_name, 0, sizeof(*s->last_name));
     int loc = 0;
     int k = 0;
     while(loc < 4) {
@@ -80,10 +77,8 @@ struct student *parser(char *input, struct student *reg) {
 }
 
 struct student *addStudent(struct student *reg, struct student *s) {
-    // int last = sizeof(reg) / sizeof(struct student *);
     int last;
     for (last = 0; reg[last].stud_num != 0; last++);
-    // printf("%d\n", last);
     reg[last] = *s;
     reg = realloc(reg, (last + 2) * sizeof(struct student));
     reg[last + 1].stud_num = 0;
@@ -94,7 +89,6 @@ struct student *addStudent(struct student *reg, struct student *s) {
 struct student *find_studentnr(int opnro, struct student *reg) {
     for (int i = 0; reg[i].stud_num != 0; i++) {
         if (reg[i].stud_num == opnro) {
-            printf("%s\n", reg[i].first_name);
             return &reg[i];
         }
     }
