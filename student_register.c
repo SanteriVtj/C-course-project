@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-void printStudent(struct student *reg) {
+void printStudent(const struct student *reg) {
     for (int i = 0; reg[i].stud_num != 0; i++) {
         printf("%s %s\n", reg[i].first_name, reg[i].last_name);
         printf("Student number: %d\n", reg[i].stud_num);

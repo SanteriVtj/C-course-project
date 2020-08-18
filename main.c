@@ -37,7 +37,7 @@ int main(void) {
             break;
 
         default:
-            // printf("%s", buffer);
+            printf("Error: Not a proper command!\n");
             break;
         }
     }
