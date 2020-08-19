@@ -209,6 +209,76 @@ int writeFile(struct student **reg, char *input) {
     return 0;
 }
 
+struct student **readFile(struct student **reg, char *input) {
+    del_register(reg);
+    int loc = 0;
+    int k = 0;
+    char file_name[24];
+    while(loc < 3) {
+        if (isspace((unsigned char) input[k])) {
+            while (isspace((unsigned char) input[k])) k++;
+            loc++;
+        }
+        if (!isspace((unsigned char) input[k])) {
+            int i = 0;
+            int j;
+            switch (loc)
+            {
+            case 1:
+                for (j = k; !isspace(input[j]); j++) {
+                    if (i == 20) {
+                        printf("Only including 20 first characters of last name\n");
+                    }
+                    if (i <= 20) {
+                        file_name[i] = input[j];
+                    }
+                    i++;
+                }
+                char *type = ".txt";
+                int c = 0; 
+                for (int x = i; c < 5; x++) {
+                    file_name[x] = type[c++];
+                }
+                k = j;
+                // printf("%s\n", file_name);
+                break;
+            
+            default:
+                k++;
+                break;
+            }
+        }
+    }
+    FILE *f;
+    f = fopen(file_name, "r");
+    if (!f) {
+        printf("Error: Could not open file!\n");
+    }
+    int i = 0;
+    int sn, p1, p2, p3, p4, p5, p6, su;
+    char fname[21], lname[21];
+    while (fscanf(f, "%d %d %d %d %d %d %d %d %s %s", &sn, &p1, &p2, &p3, &p4, &p5, &p6, &su, fname, lname) > 0){
+        struct student *s = malloc(sizeof(struct student));
+        s->stud_num = sn;
+        s->points[0] = p1;
+        s->points[1] = p2;
+        s->points[2] = p3;
+        s->points[3] = p4;
+        s->points[4] = p5;
+        s->points[5] = p6;
+        s->sum = su;
+        for (int i = 0; fname[i] != '\0'; i++) {
+            s->first_name[i] = fname[i];
+        }
+        for (int i = 0; lname[i] != '\0'; i++) {
+            s->last_name[i] = lname[i];
+        }
+        reg[i++] = s;
+    }
+    fclose(f);
+    return reg;
+}
+
 void del_register(struct student **r) {
     for (int i = 0; r[i] != NULL; i++) {
         free(r[i]);

@@ -21,7 +21,6 @@ int main(void) {
             printf("Bye!\n");
             loop = 0;
             del_register(reg);
-            // free(reg);
             break;
 
         case 'U':
@@ -38,6 +37,10 @@ int main(void) {
 
         case 'W':
             writeFile(reg, buffer);
+            break;
+
+        case 'O':
+            reg = readFile(reg, buffer);
             break;
 
         default:
