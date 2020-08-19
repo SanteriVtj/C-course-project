@@ -36,6 +36,10 @@ int main(void) {
             printStudent(reg);
             break;
 
+        case 'W':
+            writeFile(reg, buffer);
+            break;
+
         default:
             printf("Error: Not a proper command!\n");
             break;

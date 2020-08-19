@@ -152,6 +152,63 @@ void refresP(char *input, struct student **reg) {
     s->sum = s->sum + p;
 }
 
+int writeFile(struct student **reg, char *input) {
+    int loc = 0;
+    int k = 0;
+    char name[24];
+    while(loc < 3) {
+        if (isspace((unsigned char) input[k])) {
+            while (isspace((unsigned char) input[k])) k++;
+            loc++;
+        }
+        if (!isspace((unsigned char) input[k])) {
+            int i = 0;
+            int j;
+            switch (loc)
+            {
+            case 1:
+                for (j = k; !isspace(input[j]); j++) {
+                    if (i == 20) {
+                        printf("Only including 20 first characters of last name\n");
+                    }
+                    if (i <= 20) {
+                        name[i] = input[j];
+                    }
+                    i++;
+                }
+                char *type = ".txt";
+                int c = 0; 
+                for (int x = i; c < 5; x++) {
+                    name[x] = type[c++];
+                }
+                k = j;
+                break;
+            
+            default:
+                k++;
+                break;
+            }
+        }
+    }
+    FILE *f;
+    f = fopen(name, "w");
+    if (f == NULL) {
+        printf("Error: Couldn't open the file");
+        return -1;
+    }
+    for (int i = 0; reg[i] != NULL; i++) {
+        fprintf(f, "%d ", reg[i]->stud_num);
+        for (int j = 0; j < 6; j++) {
+            fprintf(f, "%d ", reg[i]->points[j]);
+        }
+        fprintf(f, "%d ", reg[i]->sum);
+        fprintf(f, "%s ", reg[i]->first_name);
+        fprintf(f, "%s\n", reg[i]->last_name);
+    }
+    fclose(f);
+    return 0;
+}
+
 void del_register(struct student **r) {
     for (int i = 0; r[i] != NULL; i++) {
         free(r[i]);
