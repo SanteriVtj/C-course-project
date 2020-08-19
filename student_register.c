@@ -4,20 +4,22 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-void printStudent(const struct student *reg) {
-    for (int i = 0; reg[i].stud_num != 0; i++) {
-        printf("%s %s\n", reg[i].first_name, reg[i].last_name);
-        printf("Student number: %d\n", reg[i].stud_num);
+void printStudent(struct student **reg) {
+    for (int i = 0; reg[i] != NULL; i++) {
+        printf("%s %s\n", reg[i]->first_name, reg[i]->last_name);
+        printf("Student number: %d\n", reg[i]->stud_num);
         for (int j = 0; j < 6; j++) {
-            printf("%d ", reg[i].points[j]);
+            printf("%d ", reg[i]->points[j]);
         }
         printf("\n");
-        printf("%d\n", reg[i].sum);
+        printf("%d\n", reg[i]->sum);
     }
 }
 
-struct student *addParser(char *input, struct student *reg) {
+struct student **addParser(char *input, struct student **reg) {
     struct student *s = malloc(sizeof(struct student));
+    memset(s->first_name, 0, sizeof(s->first_name));
+    memset(s->last_name, 0, sizeof(s->last_name));
     int loc = 0;
     int k = 0;
     while(loc < 4) {
@@ -76,31 +78,30 @@ struct student *addParser(char *input, struct student *reg) {
     return addStudent(reg, s);
 }
 
-struct student *addStudent(struct student *reg, struct student *s) {
+struct student **addStudent(struct student **reg, struct student *s) {
     int last;
-    for (last = 0; reg[last].stud_num != 0; last++);
-    reg[last] = *s;
-    reg = realloc(reg, (last + 2) * sizeof(struct student));
-    reg[last + 1].stud_num = 0;
-    free(s);
+    for (last = 0; reg[last] != NULL; last++);
+    reg[last] = s;
+    reg = realloc(reg, (last + 2) * sizeof(struct student *));
+    reg[last + 1] = NULL;
     return reg;
 }
 
-struct student *find_studentnr(int opnro, struct student *reg) {
-    for (int i = 0; reg[i].stud_num != 0; i++) {
-        if (reg[i].stud_num == opnro) {
-            return &reg[i];
+struct student *find_studentnr(int opnro, struct student **reg) {
+    for (int i = 0; reg[i] != NULL; i++) {
+        if (reg[i]->stud_num == opnro) {
+            return reg[i];
         }
     }
     return NULL;
 }
 
-void refresP(char *input, struct student *reg) {
+void refresP(char *input, struct student **reg) {
     int opnro;
     int idx;
     int p;
     int loc = 0;
-    int k = 0; 
+    int k = 0;
     while(loc < 4) {
         if (isspace((unsigned char) input[k])) {
             while (isspace((unsigned char) input[k])) k++;
@@ -149,4 +150,11 @@ void refresP(char *input, struct student *reg) {
     }
     s->points[idx - 1] = p;
     s->sum = s->sum + p;
+}
+
+void del_register(struct student **r) {
+    for (int i = 0; r[i] != NULL; i++) {
+        free(r[i]);
+    }
+    free(r);
 }

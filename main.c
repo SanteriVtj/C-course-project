@@ -6,8 +6,8 @@
 int main(void) {
     int loop = 1;
     char buffer[150];
-    struct student *reg = malloc(sizeof(struct student));
-    reg[0].stud_num = 0;
+    struct student **reg = malloc(sizeof(struct student *));
+    reg[0] = NULL;
     while (loop) {
         printf("Insert command: ");
         if (fgets(buffer, 150, stdin) == NULL) {
@@ -20,8 +20,8 @@ int main(void) {
         case 'Q':
             printf("Bye!\n");
             loop = 0;
+            del_register(reg);
             // free(reg);
-            free(reg);
             break;
 
         case 'U':
