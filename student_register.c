@@ -211,10 +211,12 @@ int writeFile(struct student **reg, char *input) {
 
 struct student **readFile(struct student **reg, char *input) {
     del_register(reg);
+    reg = malloc(sizeof(struct student *));
+    reg[0] = NULL;
     int loc = 0;
     int k = 0;
     char file_name[24];
-    while(loc < 3) {
+    while(loc < 2) {
         if (isspace((unsigned char) input[k])) {
             while (isspace((unsigned char) input[k])) k++;
             loc++;
@@ -254,7 +256,6 @@ struct student **readFile(struct student **reg, char *input) {
     if (!f) {
         printf("Error: Could not open file!\n");
     }
-    int i = 0;
     int sn, p1, p2, p3, p4, p5, p6, su;
     char fname[21], lname[21];
     while (fscanf(f, "%d %d %d %d %d %d %d %d %s %s", &sn, &p1, &p2, &p3, &p4, &p5, &p6, &su, fname, lname) > 0){
@@ -273,7 +274,7 @@ struct student **readFile(struct student **reg, char *input) {
         for (int i = 0; lname[i] != '\0'; i++) {
             s->last_name[i] = lname[i];
         }
-        reg[i++] = s;
+        reg = addStudent(reg, s);
     }
     fclose(f);
     return reg;
