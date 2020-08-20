@@ -31,16 +31,16 @@ int main(void) {
             reg = addParser(buffer, reg);
             break;
         
-        case 'L':
-            printStudent(reg);
-            break;
-
         case 'W':
             writeFile(reg, buffer);
             break;
 
         case 'O':
             reg = readFile(reg, buffer);
+            break;
+
+        case 'L':
+            printStudent(reg);
             break;
 
         default:

@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 void printStudent(struct student **reg) {
+    // Loops register until finds first nullpointer
     for (int i = 0; reg[i] != NULL; i++) {
         printf("%s %s\n", reg[i]->first_name, reg[i]->last_name);
         printf("Student number: %d\n", reg[i]->stud_num);
@@ -18,6 +19,7 @@ void printStudent(struct student **reg) {
 
 struct student **addParser(char *input, struct student **reg) {
     struct student *s = malloc(sizeof(struct student));
+    // Initializing names to be able to use conditionals
     memset(s->first_name, 0, sizeof(s->first_name));
     memset(s->last_name, 0, sizeof(s->last_name));
     int loc = 0;
@@ -34,6 +36,7 @@ struct student **addParser(char *input, struct student **reg) {
             int j;
             switch (loc)
             {
+            // Parsing student number
             case 1:
                 for (j = k; !isspace(input[j]); j++) {
                     stud_n[i++] = (int) input[j];
@@ -41,7 +44,8 @@ struct student **addParser(char *input, struct student **reg) {
                 s->stud_num = atoi(stud_n);
                 k = j;
                 break;
-            
+
+            // Parsing last name
             case 2:
                 for (j = k; !isspace(input[j]); j++) {
                     if (i == 20) {
@@ -55,6 +59,7 @@ struct student **addParser(char *input, struct student **reg) {
                 k = j;
                 break;
             
+            // Parsing first name
             case 3:
                 for (j = k; !isspace(input[j]); j++) {
                     if (i == 20) {
@@ -73,6 +78,7 @@ struct student **addParser(char *input, struct student **reg) {
             }
         }
     }
+    // Initialize all points to 0
     memset(s->points, 0, sizeof(s->points));
     s->sum = 0;
     return addStudent(reg, s);
@@ -88,6 +94,7 @@ struct student **addStudent(struct student **reg, struct student *s) {
 }
 
 struct student *find_studentnr(int opnro, struct student **reg) {
+    // Loops through register and checks all student numbers until finds on which match to given opnro
     for (int i = 0; reg[i] != NULL; i++) {
         if (reg[i]->stud_num == opnro) {
             return reg[i];
@@ -113,6 +120,7 @@ void refresP(char *input, struct student **reg) {
             char stud_n[7];
             switch (loc)
             {
+            // Parsing student number
             case 1:
                 for (j = k; !isspace(input[j]); j++) {
                     stud_n[i++] = (int) input[j];
@@ -121,6 +129,7 @@ void refresP(char *input, struct student **reg) {
                 k = j;
                 break;
             
+            // Parsing round number (index in points array)
             case 2:
                 for (j = k; !isspace(input[j]); j++) {
                     stud_n[i++] = (int) input[j];
@@ -129,6 +138,7 @@ void refresP(char *input, struct student **reg) {
                 k = j;
                 break;
             
+            // Parsing amount of points
             case 3:
                 for (j = k; !isspace(input[j]); j++) {
                     stud_n[i++] = (int) input[j];
@@ -148,8 +158,10 @@ void refresP(char *input, struct student **reg) {
         printf("Error: didn't find student with given student number.");
         return;
     }
+
+    // Adding the difference in updated points to sum
+    s->sum = s->sum - s->points[idx - 1] + p;
     s->points[idx - 1] = p;
-    s->sum = s->sum + p;
 }
 
 int writeFile(struct student **reg, char *input) {
@@ -166,6 +178,8 @@ int writeFile(struct student **reg, char *input) {
             int j;
             switch (loc)
             {
+
+            // Parsing filename and adding ".txt" type
             case 1:
                 for (j = k; !isspace(input[j]); j++) {
                     if (i == 20) {
@@ -260,6 +274,8 @@ struct student **readFile(struct student **reg, char *input) {
     char fname[21], lname[21];
     while (fscanf(f, "%d %d %d %d %d %d %d %d %s %s", &sn, &p1, &p2, &p3, &p4, &p5, &p6, &su, fname, lname) > 0){
         struct student *s = malloc(sizeof(struct student));
+        memset(s->first_name, 0, sizeof(s->first_name));
+        memset(s->last_name, 0, sizeof(s->last_name));
         s->stud_num = sn;
         s->points[0] = p1;
         s->points[1] = p2;
