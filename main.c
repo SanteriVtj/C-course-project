@@ -5,12 +5,13 @@
 
 int main(void) {
     int loop = 1;
-    char buffer[150];
+    char buffer[80];
     struct student **reg = malloc(sizeof(struct student *));
     reg[0] = NULL;
     while (loop) {
+        memset(buffer, 0, sizeof(buffer));
         printf("Insert command: ");
-        if (fgets(buffer, 150, stdin) == NULL) {
+        if (fgets(buffer, 80, stdin) == NULL) {
             printf("fget returned NULL");
             break;
         }
@@ -28,10 +29,9 @@ int main(void) {
             break;
 
         case 'A':
+            // printf("%s\n", buffer);
+            // printf("%lu\n", sizeof(buffer) / sizeof(char));
             reg = addParser(buffer, reg);
-            if (reg != NULL) {
-                printf("Student added to register.\n");
-            }
             break;
         
         case 'W':

@@ -54,7 +54,7 @@ struct student **addParser(char *input, struct student **reg) {
     memset(s->last_name, 0, sizeof(s->last_name));
     int loc = 0;
     int k = 0;
-    while(loc < 4) {
+    while(loc < 4 && k < 80) {
         if (isspace((unsigned char) input[k])) {
             while (isspace((unsigned char) input[k])) k++;
             loc++;
@@ -74,7 +74,7 @@ struct student **addParser(char *input, struct student **reg) {
                 s->stud_num = atoi(stud_n);
                 if (s->stud_num == 0) {
                     printf("Error: Student number was not accepted\n");
-                    return NULL;
+                    return reg;
                 }
                 k = j;
                 break;
@@ -82,7 +82,7 @@ struct student **addParser(char *input, struct student **reg) {
             // Parsing last name
             case 2:
                 for (j = k; !isspace(input[j]); j++) {
-                    if (i == 20) {
+                    if (i == 20 && strlen(s->last_name) != 0) {
                         printf("Only including 20 first characters of last name\n");
                     }
                     if (i <= 20) {
@@ -90,13 +90,12 @@ struct student **addParser(char *input, struct student **reg) {
                     }
                     i++;
                 }
-                printf("%s\n", s->last_name);
                 k = j;
                 break;
             
             // Parsing first name
             case 3:
-                for (j = k; !isspace(input[j]); j++) {
+                for (j = k; !isspace(input[j]); j++ && strlen(s->first_name) != 0) {
                     if (i == 20) {
                         printf("Only including 20 first characters of first name\n");
                     }
@@ -105,14 +104,18 @@ struct student **addParser(char *input, struct student **reg) {
                     }
                     i++;
                 }
-                printf("%s\n", s->first_name);
                 k = j;
                 break;
+
             default:
                 k++;
                 break;
             }
         }
+    }
+    if (strlen(s->first_name) == 0 && strlen(s->last_name) == 0) {
+        printf("Error: Names aren't in correct form.\n");
+        return reg;
     }
     // Initialize all points to 0
     memset(s->points, 0, sizeof(s->points));
@@ -130,6 +133,7 @@ struct student **addStudent(struct student **reg, struct student *s) {
         return NULL;
     }
     reg[last + 1] = NULL;
+    printf("Student added to register!\n");
     return reg;
 }
 
