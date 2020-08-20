@@ -4,17 +4,39 @@
 #include <ctype.h>
 #include <stdlib.h>
 
+int *sorted(struct student **reg) {
+    int n;
+    for (n = 0; reg[n] != NULL; n++);
+    int *order = malloc(sizeof(int) * n);
+    for (int i = 0; i < n; i++) {
+        order[i] = i;
+    }
+    // Simple O(n)^2 sorting algorithm sorting register in ascending order
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (reg[j]->sum > reg[i]->sum) {
+                int tmp = order[i];
+                order[i] = order[j];
+                order[j] = tmp;
+            }
+        }
+    }
+    return order;
+}
+
 void printStudent(struct student **reg) {
+    int *order = sorted(reg);
     // Loops register until finds first nullpointer
     for (int i = 0; reg[i] != NULL; i++) {
-        printf("%s %s\n", reg[i]->first_name, reg[i]->last_name);
-        printf("Student number: %d\n", reg[i]->stud_num);
+        printf("%s %s\n", reg[order[i]]->first_name, reg[order[i]]->last_name);
+        printf("Student number: %d\n", reg[order[i]]->stud_num);
         for (int j = 0; j < 6; j++) {
-            printf("%d ", reg[i]->points[j]);
+            printf("%d ", reg[order[i]]->points[j]);
         }
         printf("\n");
-        printf("%d\n", reg[i]->sum);
+        printf("%d\n", reg[order[i]]->sum);
     }
+    free(order);
 }
 
 struct student **addParser(char *input, struct student **reg) {
