@@ -6,8 +6,13 @@
 
 int *sorted(struct student **reg) {
     int n;
+    // Checking lengt of register and making 
     for (n = 0; reg[n] != NULL; n++);
     int *order = malloc(sizeof(int) * n);
+    if (order == NULL) {
+        printf("Error: Failed to allocate memory.\n");
+        return NULL;
+    }
     for (int i = 0; i < n; i++) {
         order[i] = i;
     }
@@ -41,6 +46,9 @@ void printStudent(struct student **reg) {
 
 struct student **addParser(char *input, struct student **reg) {
     struct student *s = malloc(sizeof(struct student));
+    if (s == NULL) {
+        printf("Error: Failed to allocate memory.\n");
+    }
     // Initializing names to be able to use conditionals
     memset(s->first_name, 0, sizeof(s->first_name));
     memset(s->last_name, 0, sizeof(s->last_name));
@@ -64,6 +72,10 @@ struct student **addParser(char *input, struct student **reg) {
                     stud_n[i++] = (int) input[j];
                 }
                 s->stud_num = atoi(stud_n);
+                if (s->stud_num == 0) {
+                    printf("Error: Student number was not accepted\n");
+                    return NULL;
+                }
                 k = j;
                 break;
 
@@ -78,6 +90,7 @@ struct student **addParser(char *input, struct student **reg) {
                     }
                     i++;
                 }
+                printf("%s\n", s->last_name);
                 k = j;
                 break;
             
@@ -92,6 +105,7 @@ struct student **addParser(char *input, struct student **reg) {
                     }
                     i++;
                 }
+                printf("%s\n", s->first_name);
                 k = j;
                 break;
             default:
@@ -111,6 +125,10 @@ struct student **addStudent(struct student **reg, struct student *s) {
     for (last = 0; reg[last] != NULL; last++);
     reg[last] = s;
     reg = realloc(reg, (last + 2) * sizeof(struct student *));
+    if (reg == NULL) {
+        printf("Error: Reallocating memory for new student failed.\n");
+        return NULL;
+    }
     reg[last + 1] = NULL;
     return reg;
 }
@@ -232,6 +250,7 @@ int writeFile(struct student **reg, char *input) {
         printf("Error: Couldn't open the file");
         return -1;
     }
+    // Writing register to file which have name given as an argument
     for (int i = 0; reg[i] != NULL; i++) {
         fprintf(f, "%d ", reg[i]->stud_num);
         for (int j = 0; j < 6; j++) {
@@ -246,6 +265,7 @@ int writeFile(struct student **reg, char *input) {
 }
 
 struct student **readFile(struct student **reg, char *input) {
+    // Cleans register before filling it with information in file
     del_register(reg);
     reg = malloc(sizeof(struct student *));
     reg[0] = NULL;
@@ -262,6 +282,7 @@ struct student **readFile(struct student **reg, char *input) {
             int j;
             switch (loc)
             {
+            // Parsing filename
             case 1:
                 for (j = k; !isspace(input[j]); j++) {
                     if (i == 20) {
@@ -278,7 +299,6 @@ struct student **readFile(struct student **reg, char *input) {
                     file_name[x] = type[c++];
                 }
                 k = j;
-                // printf("%s\n", file_name);
                 break;
             
             default:
@@ -294,7 +314,12 @@ struct student **readFile(struct student **reg, char *input) {
     }
     int sn, p1, p2, p3, p4, p5, p6, su;
     char fname[21], lname[21];
+    // Scans all necessary info to fill the student structure and fills register with new students
     while (fscanf(f, "%d %d %d %d %d %d %d %d %s %s", &sn, &p1, &p2, &p3, &p4, &p5, &p6, &su, fname, lname) > 0){
+        if (sn == 0) {
+            printf("Error: Student number was not accepted\n");
+            return NULL;
+        }
         struct student *s = malloc(sizeof(struct student));
         memset(s->first_name, 0, sizeof(s->first_name));
         memset(s->last_name, 0, sizeof(s->last_name));
@@ -312,6 +337,7 @@ struct student **readFile(struct student **reg, char *input) {
         for (int i = 0; lname[i] != '\0'; i++) {
             s->last_name[i] = lname[i];
         }
+        // Uses same addStudent function as manual adding of students
         reg = addStudent(reg, s);
     }
     fclose(f);
@@ -319,8 +345,10 @@ struct student **readFile(struct student **reg, char *input) {
 }
 
 void del_register(struct student **r) {
+    // Frees the memory used for register
     for (int i = 0; r[i] != NULL; i++) {
         free(r[i]);
     }
     free(r);
+    printf("Register freed!\n");
 }

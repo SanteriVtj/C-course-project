@@ -18,9 +18,9 @@ int main(void) {
         switch (buffer[0])
         {
         case 'Q':
-            printf("Bye!\n");
             loop = 0;
             del_register(reg);
+            printf("Bye!\n");
             break;
 
         case 'U':
@@ -29,6 +29,9 @@ int main(void) {
 
         case 'A':
             reg = addParser(buffer, reg);
+            if (reg != NULL) {
+                printf("Student added to register.\n");
+            }
             break;
         
         case 'W':
@@ -43,6 +46,7 @@ int main(void) {
             printStudent(reg);
             break;
 
+        // If given command doesn't have any of the letters above as a first character defaults to error message
         default:
             printf("Error: Not a proper command!\n");
             break;
