@@ -5,6 +5,11 @@
 #include <stdlib.h>
 
 int *sorted(struct student **reg) {
+    /* Makes new int array which have has the order for register.
+    For example if register has [3, 1, 5] as a sums of points sorted
+    return int array containing [1, 2, 0] which is the order in which the
+    list is printed. */
+
     int n;
     // Checking lengt of register and making 
     for (n = 0; reg[n] != NULL; n++);
@@ -30,6 +35,10 @@ int *sorted(struct student **reg) {
 }
 
 void printStudent(struct student **reg) {
+    /* Loops through "order" array which contains the order in which 
+    register should be printed and every iteration prints student at
+    the index that order array points. */
+
     int *order = sorted(reg);
     // Loops register until finds first nullpointer
     for (int i = 0; reg[i] != NULL; i++) {
@@ -45,6 +54,11 @@ void printStudent(struct student **reg) {
 }
 
 struct student **addParser(char *input, struct student **reg) {
+    /* Takes command as an argument and parses it if it is in correct 
+    format ("A" "studen number" "last name" "first name") and passes it
+    forwards to adding function which handels the memory management and adding
+    it to the register. */
+
     struct student *s = malloc(sizeof(struct student));
     if (s == NULL) {
         printf("Error: Failed to allocate memory.\n");
@@ -124,6 +138,9 @@ struct student **addParser(char *input, struct student **reg) {
 }
 
 struct student **addStudent(struct student **reg, struct student *s) {
+    /* Checks the length of register and reallocates memory so that it has free space
+    for one more student and adds new student as the last of the array of pointers. */
+
     int last;
     for (last = 0; reg[last] != NULL; last++);
     reg[last] = s;
@@ -137,8 +154,10 @@ struct student **addStudent(struct student **reg, struct student *s) {
     return reg;
 }
 
-struct student *find_studentnr(int opnro, struct student **reg) {
-    // Loops through register and checks all student numbers until finds on which match to given opnro
+struct student *findStudentByNro(int opnro, struct student **reg) {
+    /* Loops through register and checks all student numbers until finds on 
+    which match to given student number (opnro). */
+
     for (int i = 0; reg[i] != NULL; i++) {
         if (reg[i]->stud_num == opnro) {
             return reg[i];
@@ -148,6 +167,9 @@ struct student *find_studentnr(int opnro, struct student **reg) {
 }
 
 void refresP(char *input, struct student **reg) {
+    /* Takes command and parses it and updates points if the command container correct
+    elements ("U" "student number" " course number" "new points") */
+
     int opnro;
     int idx;
     int p;
@@ -208,7 +230,12 @@ void refresP(char *input, struct student **reg) {
     s->points[idx - 1] = p;
 }
 
-int writeFile(struct student **reg, char *input) {
+int writeToFile(struct student **reg, char *input) {
+    /* Takes command and parses it ("W" "filename") and adds file extension
+    to the name. After that loops through register and writes the contet to
+    file it created as a strings separated with whitespace one structure
+    at a line. */
+
     int loc = 0;
     int k = 0;
     char name[24];
@@ -268,7 +295,12 @@ int writeFile(struct student **reg, char *input) {
     return 0;
 }
 
-struct student **readFile(struct student **reg, char *input) {
+struct student **readFromFile(struct student **reg, char *input) {
+    /* Takes comman and parses it ("O" "file name") and tries to open file
+    named as the command suggests plus the file extension (.txt). If directory
+    contains the file it loops through it line by line and calls addStudent()
+    at every line and tries to add the student wrote on line. */
+
     // Cleans register before filling it with information in file
     del_register(reg);
     reg = malloc(sizeof(struct student *));
@@ -348,7 +380,10 @@ struct student **readFile(struct student **reg, char *input) {
     return reg;
 }
 
-void del_register(struct student **r) {
+void delRegister(struct student **r) {
+    /* Loops through register and frees memory for every studen structure
+    and at the end frees the register. */
+
     // Frees the memory used for register
     for (int i = 0; r[i] != NULL; i++) {
         free(r[i]);
