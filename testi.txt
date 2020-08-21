@@ -1,3 +1,0 @@
-123456 0 0 0 0 0 0 0 Olli Opiskelija
-456789 0 0 0 0 0 0 0 Oki Oppilas
-789123 0 0 0 0 0 0 0 Ossi Ojankaivaja

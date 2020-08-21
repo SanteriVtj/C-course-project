@@ -278,7 +278,7 @@ int writeToFile(struct student **reg, char *input) {
     FILE *f;
     f = fopen(name, "w");
     if (f == NULL) {
-        printf("Error: Couldn't open the file");
+        printf("Error: Couldn't open the file.\n");
         return -1;
     }
     // Writing register to file which have name given as an argument
