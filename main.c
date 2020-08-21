@@ -30,7 +30,7 @@ int main(void) {
         {
         case 'Q':
             loop = 0;
-            del_register(reg);
+            delRegister(reg);
             printf("Bye!\n");
             break;
 
@@ -43,11 +43,11 @@ int main(void) {
             break;
         
         case 'W':
-            writeFile(reg, buffer);
+            writeToFile(reg, buffer);
             break;
 
         case 'O':
-            reg = readFile(reg, buffer);
+            reg = readFromFile(reg, buffer);
             break;
 
         case 'L':

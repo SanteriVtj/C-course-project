@@ -219,7 +219,7 @@ void refresP(char *input, struct student **reg) {
             memset(stud_n, 0, 7);
         }
     }
-    struct student *s = find_studentnr(opnro, reg);
+    struct student *s = findStudentByNro(opnro, reg);
     if (s == NULL) {
         printf("Error: didn't find student with given student number.");
         return;
@@ -302,7 +302,7 @@ struct student **readFromFile(struct student **reg, char *input) {
     at every line and tries to add the student wrote on line. */
 
     // Cleans register before filling it with information in file
-    del_register(reg);
+    delRegister(reg);
     reg = malloc(sizeof(struct student *));
     reg[0] = NULL;
     int loc = 0;
